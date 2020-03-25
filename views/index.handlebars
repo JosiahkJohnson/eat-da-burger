@@ -1,0 +1,55 @@
+<h1>Custom burgers!</h1>
+
+{{!-- new row under the title --}}
+<div class="row">
+    
+    {{!-- Content on the left side --}}
+    {{!-- Uneaten burgers --}}
+    <div class="col-sm-6">
+        <h2>Burgers to be eaten:</h2>
+        <ul>
+            {{!-- Loop through our burgers --}}
+            {{#each burgers}}
+                {{!-- Determine if they have been eaten --}}
+                {{#unless eaten}}
+                    {{> burgers/burger-block eaten = false}}
+                {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+    {{!-- Content on the right side --}}
+    {{!-- Burgers that have been eaten --}}
+    <div class="col-sm-6">
+        <h2>Burgers that have been eaten:</h2>
+        <ul>
+            {{!-- Loop through the burgers again --}}
+            {{#each burgers}}
+                {{!-- Our conditional --}}
+                {{#if eaten}}
+                    {{> burgers/burger-block eaten = true}}
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+{{!-- Our form group for creating new burgers --}}
+<h2>Create a new burger:</h2>
+<form class="create-form">
+
+    {{!-- label and text input --}}
+    <div class="form-group">
+        <label for="burger">Burger type:</label>
+        <input type="text" id="burger" name="type">
+    </div>
+
+    {{!-- Already eaten for some reason? select here! --}}
+    <div class="form-group">
+        <label for="eaten">Eaten already?</label><br>
+        <input type="radio" name="eaten" id="0" checked>No <br>
+        <input type="radio" name="eaten" id="1"> Yes, it's too good to ignore
+    </div>
+
+    {{!-- The important button! --}}
+    <button type="submit">Add Da Burger!</button>
+</form>
