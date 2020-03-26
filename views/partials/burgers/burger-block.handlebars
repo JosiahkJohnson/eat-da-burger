@@ -1,0 +1,24 @@
+{{!-- This partial should be called every time a new burger needs to be printed onto the screen --}}
+{{!-- In both catigories --}}
+<li>
+    <br>
+    {{!-- Display the name --}}
+    {{name}}
+    {{!-- TODO: display the picture --}}
+
+    {{!-- Create a button to EAT DA BURGER --}}
+    {{!-- Or create another --}}
+    <button class="change-state" data-id="{{id}}" data-state="{{eaten}}">
+        {{!-- The message will change on the button depeding on the current state --}}
+        {{#if eaten}}Make another{{else}}Eat-Da-Burger{{/if}}
+    </button>
+
+    {{!-- Picture of a burger --}}
+    <br>
+    <img src="/img/burger.jpg" alt="Picture of a hamburger">
+    <br>
+
+    {{!-- remove burger button --}}
+    {{!-- I guess I might use this feature after-all --}}
+    <button class="delete-burger" data-id="{{id}}">Remove from menu</button>
+</li>

@@ -56,9 +56,10 @@ router.put("/api/burgers/:id", function(req, res){
 
 //the delete route to remove burgers
 router.delete("/api/burgers/:id", function(req, res){
-    const condition = "id = " + req.params.id;
+    const conditionId = "id = " + req.params.id;
+    console.log("controller deleting:", conditionId);
 
-    burger.delete(condition, function(result){
+    burger.delete(conditionId, function(result){
         if(result.affectedRows == 0){
             //same as before, the burger must be found
             return res.status(404).end();

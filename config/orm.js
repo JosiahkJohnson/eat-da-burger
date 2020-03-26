@@ -14,23 +14,23 @@ function questionMarks(num){
 }
 
 //discecting keys out of objects for SQL syntex
-function sqlLanguage(object){
-    const query = [];
+// function sqlLanguage(object){
+//     const query = [];
 
-    //write 'key' = value for each key in the passed object
-    for(let i = 0; i < object.length; i++){
-        let value = object[i];
+//     //write 'key' = value for each key in the passed object
+//     for(let i = 0; i < object.length; i++){
+//         let value = object[i];
 
-        //account for spaces in some string values
-        if(typeof i === "string" && value.indexOf(" ") >= 0){
-            //add our string marks
-            value = "'" + value + "'";
-        }
+//         //account for spaces in some string values
+//         if(typeof i === "string" && value.indexOf(" ") >= 0){
+//             //add our string marks
+//             value = "'" + value + "'";
+//         }
 
-        //push in our resulting sql command
-        query.push(i + "=" + value);
-    }
-}
+//         //push in our resulting sql command
+//         query.push(i + "=" + value);
+//     }
+// }
 
 //our object that will hold all of our mySql commands
 const orm = {
@@ -50,18 +50,28 @@ const orm = {
     },
     //function to create a new instance on a given table
     create: function(table, cols, values, callback){
+        let state = false;
+        //console.log(values);
+        if(values[1] === "true"){
+            state = true;
+        }
+        const insertValue = [
+            values[0],
+            state
+        ]
         //selecting the table
-        const query = "INSERT INTO " + table;
+        let query = "INSERT INTO " + table;
 
         //add the passed column paramaters
         query += " (" + cols.toString() + ") ";
-        //add the values to the parameters
+        //add the value to the parameters
         query += "VALUES (" + questionMarks(values.length) + ") ";
+        
 
         console.log(query);
 
         //query the server with the new data
-        connection.query(query, function(error, result){
+        connection.query(query, insertValue, function(error, result){
             if(error) throw error;
 
             //use our passed in callback
@@ -72,7 +82,7 @@ const orm = {
     //update function mostly used for moving burgers to the eaten side when "devored"
     update: function(table, colObject, condition, callback){
         //setup the query by concatinating string together
-        const query = "UPDATE " + table + " SET " + sqlLanguage(colObject) + " WHERE " + condition;
+        const query = "UPDATE " + table + " SET eaten = " + colObject.eaten + " WHERE " + condition;
 
         console.log(query);
         connection.query(query, function(error, result){
@@ -82,8 +92,9 @@ const orm = {
         });
     },
     //this delete function wont initailly be used, I might use it later if I have time
-    delete: function(table, condition, callback){
-        const string = "DELETE FROM " + table + " WHERE " + condition;
+    delete: function(table, conditionId, callback){
+        console.log("Orm deleting: ", conditionId);
+        const string = "DELETE FROM " + table + " WHERE " + conditionId;
 
         console.log(string);
         connection.query(string, function(error, result){
